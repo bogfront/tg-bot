@@ -1,5 +1,5 @@
 import {IConfigService} from "./config/config.interface";
-import {session, Telegraf} from "telegraf";
+import {Telegraf} from "telegraf";
 import {ConfigService} from "./config/config.service";
 import {IBotContext} from "./context/contenxt.interface";
 import {Command} from "./commands/commands.class";
@@ -17,12 +17,24 @@ class Bot {
         );
     }
 
-    init () {
-        this.commands = [new StartCommand(this.bot)]
+    async init () {
+        this.commands = [
+            new StartCommand(this.bot)
+        ]
         for (const command of this.commands) {
             command.handle();
         }
-        this.bot.launch();
+
+        await this.setBotCommands();
+        await this.bot.launch();
+    }
+
+    async setBotCommands () {
+        const commands = [
+            {command: '/getme', description: 'Тестовые команды'}
+        ]
+
+        await this.bot.telegram.setMyCommands(commands);
     }
 }
 

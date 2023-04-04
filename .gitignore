@@ -1,7 +1,8 @@
+.idea
+
 /dist
 /node_modules
 
 .env
-
 
 sessions.json
